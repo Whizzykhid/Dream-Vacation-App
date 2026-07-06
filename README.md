@@ -1,44 +1,199 @@
 # Dream Vacation Destinations
 
-This application allows users to create a list of countries they'd like to visit, providing basic information about each country. The project is structured to mimic a real-life production environment, employing best practices in software development, deployment, and continuous integration/continuous delivery (CI/CD).
+Dream Vacation Destinations is a full-stack web application that allows users to create and manage a personal list of countries they would like to visit. Country information is retrieved from the REST Countries API, while user data is stored in a PostgreSQL database.
 
-## Setup
+The project was further enhanced by containerizing the application with Docker, orchestrating the services with Docker Compose, and implementing a CI/CD pipeline using GitHub Actions and Docker Hub.
 
-### Backend
-1. Navigate to the `backend` directory.
-2. Run `npm install` to install dependencies.
-3. Set up your PostgreSQL database and update the `.env` file with your database URL.
-4. Run `npm start` to start the server.
-
-### Frontend
-1. Navigate to the `frontend` directory.
-2. Run `npm install` to install dependencies.
-3. Update the `.env` file with your API URL (e.g., `REACT_APP_API_URL=http://localhost:3001`).
-4. Run `npm start` to start the React development server.
+---
 
 ## Features
-- **Add Countries**: Users can add countries to their dream vacation list.
-- **View Country Details**: Displays capital, population, and region information for each country.
-- **Remove Countries**: Users can remove countries from their list.
-- **Production-Ready Setup**: The project is designed to be scalable and maintainable, following industry-standard practices for deployment and CI/CD.
 
-## Roadmap
-- **CI/CD Implementation**: Automate the build, test, and deployment process using industry-standard CI/CD tools.
-- **Infrastructure as Code (IaC)**: Implement IaC for automated environment setup and management.
-- **Scalability**: Enhance the application to support multiple environments (staging, production) with proper domain names and configurations.
-- **Security**: Utilize Kubernetes Secrets and environment variables for secure data management.
-- **Microservices**: Modularize the application into microservices to improve maintainability and scalability.
+- Add countries to a personal dream vacation list.
+- View country details including capital, region and population.
+- Remove countries from the list.
+- Persistent data storage with PostgreSQL.
+- Multi-container deployment using Docker Compose.
+- Automated Docker image builds and publishing with GitHub Actions.
+
+---
 
 ## Technologies Used
-- **Frontend**: React
-- **Backend**: Node.js with Express
-- **Database**: PostgreSQL
-- **External API**: REST Countries API
-- **CI/CD**: To be implemented with [CI/CD tools, e.g., GitHub Actions, Jenkins, or Azure DevOps]
-- **Infrastructure as Code**: To be implemented with tools like Terraform or Helm
 
-## Best Practices
-- **Version Control**: All changes are tracked in Git for collaboration and history management.
-- **Environment Management**: Separate configurations for different environments (development, staging, production) using environment variables.
-- **Security**: Sensitive information is managed using environment variables and Kubernetes Secrets.
-- **Documentation**: The project is well-documented to facilitate onboarding and maintenance.
+| Component | Technology |
+|----------|------------|
+| Frontend | React |
+| Backend | Node.js & Express |
+| Database | PostgreSQL |
+| Reverse Proxy | Nginx |
+| Containerization | Docker |
+| Orchestration | Docker Compose |
+| CI/CD | GitHub Actions |
+| Container Registry | Docker Hub |
+
+---
+
+## Project Structure
+
+```text
+.
+├── frontend/
+├── backend/
+├── .github/
+│   └── workflows/
+│       ├── frontend.yml
+│       └── backend.yml
+├── docker-compose.yml
+├── README.md
+└── screenshots/
+```
+
+---
+
+## Architecture
+
+```text
+Browser
+   │
+   ▼
+Nginx (Frontend)
+   │
+   ▼
+Express Backend
+   │
+   ▼
+PostgreSQL
+```
+
+---
+
+## Project Enhancements
+
+The following improvements were made to the original project:
+
+- Created Dockerfiles for the frontend and backend services.
+- Configured a multi-container application using Docker Compose.
+- Added a PostgreSQL database service with persistent storage.
+- Configured Nginx to serve the React frontend.
+- Connected the frontend, backend and database through Docker networking.
+- Implemented GitHub Actions workflows for the frontend and backend.
+- Configured GitHub Secrets for secure authentication.
+- Published Docker images automatically to Docker Hub.
+- Tagged Docker images using both `latest` and the Git commit SHA.
+
+> **Note:** The backend application logic (`server.js`) was provided as part of the original project and was not modified.
+
+---
+
+## Running the Project
+
+Clone the repository:
+
+```bash
+git clone <repository-url>
+cd <repository-name>
+```
+
+Build and start all services:
+
+```bash
+docker compose up --build
+```
+
+To stop the application:
+
+```bash
+docker compose down
+```
+
+Once the containers are running:
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:8080 |
+| Backend API | http://localhost:3001 |
+
+---
+
+## Environment Variables
+
+Before starting the application, create the required `.env` file(s) using the provided `.env.example` file(s).
+
+Example variables:
+
+```env
+DATABASE_URL=
+PORT=
+COUNTRIES_API_BASE_URL=
+```
+
+Sensitive information such as Docker Hub credentials is stored using GitHub Secrets and is not committed to this repository.
+
+---
+
+## CI/CD
+
+GitHub Actions automates the build and publishing process for both the frontend and backend Docker images.
+
+Each workflow:
+
+- Runs on pushes and pull requests to the configured branches.
+- Builds the Docker image using Docker Buildx.
+- Authenticates with Docker Hub using GitHub Secrets.
+- Pushes the image to Docker Hub.
+- Tags images using both `latest` and the Git commit SHA.
+
+---
+
+## Screenshots
+
+### Project Structure
+
+![Project Structure](screenshots/project-structure.png)
+
+---
+
+### Docker Compose Build
+
+![Docker Compose Build](screenshots/docker-compose-build.png)
+
+---
+
+### Running Containers
+
+![Running Containers](screenshots/running-containers.png)
+
+---
+
+### GitHub Actions
+
+![GitHub Actions](screenshots/github-actions.png)
+
+---
+
+### Docker Hub Repository
+
+![Docker Hub](screenshots/dockerhub.png)
+
+---
+
+### Application Running
+
+![Frontend](screenshots/application.png)
+
+---
+
+### Backend Running
+
+![Backend](screenshots/backend.png)
+
+---
+
+## Summary
+
+This project demonstrates:
+
+- Docker containerization of a full-stack application.
+- Multi-container orchestration using Docker Compose.
+- Automated Docker image builds with GitHub Actions.
+- Secure authentication using GitHub Secrets.
+- Continuous delivery of Docker images to Docker Hub.
