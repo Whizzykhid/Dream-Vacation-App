@@ -191,6 +191,8 @@ Each workflow:
 
 ![Docker Hub Tag (SHA)](screenshots/dockerhub-sha.png)
 
+![Docker Hub Tag (SHA)](screenshots/dockerhub-tags.png)
+
 ---
 
 ## Summary
