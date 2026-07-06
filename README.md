@@ -158,21 +158,15 @@ Each workflow:
 
 ---
 
+### Docker Compose Run
+
+![Docker Compose Run](screenshots/docker-compose-running.png)
+
+---
+
 ### Running Containers
 
-![Running Containers](screenshots/running-containers.png)
-
----
-
-### GitHub Actions
-
-![GitHub Actions](screenshots/github-actions.png)
-
----
-
-### Docker Hub Repository
-
-![Docker Hub](screenshots/dockerhub.png)
+![Running Containers](screenshots/containers-running.png)
 
 ---
 
@@ -182,9 +176,20 @@ Each workflow:
 
 ---
 
-### Backend Running
+### CI/CD Workflows 
 
-![Backend](screenshots/backend.png)
+![Workflows Active](screenshots/workflows-active.png)
+
+![Workflows Logs](screenshots/workflow-logs.png)
+
+---
+
+
+### Docker Hub
+
+![Docker Hub Images](screenshots/dockerhub-image.png)
+
+![Docker Hub Tag (SHA)](screenshots/dockerhub-sha.png)
 
 ---
 
