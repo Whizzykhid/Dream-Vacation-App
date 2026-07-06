@@ -49,23 +49,6 @@ The project was further enhanced by containerizing the application with Docker, 
 
 ---
 
-## Architecture
-
-```text
-Browser
-   │
-   ▼
-Nginx (Frontend)
-   │
-   ▼
-Express Backend
-   │
-   ▼
-PostgreSQL
-```
-
----
-
 ## Project Enhancements
 
 The following improvements were made to the original project:
@@ -130,21 +113,68 @@ Sensitive information such as Docker Hub credentials is stored using GitHub Secr
 
 ---
 
-## CI/CD
+## CI/CD STRUCTURE
 
-GitHub Actions automates the build and publishing process for both the frontend and backend Docker images.
+```text
+Code Push
+    │
+    ▼
+GitHub Actions
+    │
+    ▼
+Build Docker Image
+    │
+    ▼
+Login to Docker Hub
+    │
+    ▼
+Push Docker Image
+```
 
-Each workflow:
+## CI/CD Workflows
 
-- Runs on pushes and pull requests to the configured branches.
-- Builds the Docker image using Docker Buildx.
-- Authenticates with Docker Hub using GitHub Secrets.
-- Pushes the image to Docker Hub.
-- Tags images using both `latest` and the Git commit SHA.
+This project uses GitHub Actions to automate the process of building and publishing Docker images.
+
+The pipeline works as follows:
+
+1. A push or pull request is made to the configured branch.
+2. GitHub Actions automatically starts the appropriate workflow.
+3. The repository is checked out.
+4. Docker Buildx is set up to build the Docker image.
+5. The workflow logs in to Docker Hub using credentials stored in GitHub Secrets.
+6. The Docker image is built from the corresponding Dockerfile.
+7. The image is tagged using both `latest` and the Git commit SHA.
+8. The image is pushed automatically to Docker Hub.
+
+This process ensures that every successful change results in an up-to-date Docker image without requiring manual builds or uploads.
+---
+...
+> **Security Note**
+>
+> The CI/CD pipeline authenticates with Docker Hub using GitHub Secrets (`DOCKER_USERNAME` and `DOCKER_TOKEN`). No passwords, access tokens, or other sensitive credentials are committed to source control.
+
+## Screenshots
+
+### CI/CD Workflows 
+
+![Workflows Active](screenshots/workflows-active.png)
+
+![Workflows Logs](screenshots/workflow-logs.png)
 
 ---
 
-## Screenshots
+
+### Docker Hub Repositories
+
+![Docker Hub Images](screenshots/dockerhub-image.png)
+
+![Docker Hub Tag (SHA)](screenshots/dockerhub-sha.png)
+
+![Docker Hub Tag (SHA)](screenshots/dockerhub-tags.png)
+
+---
+
+## Other Screenshots
 
 ### Project Structure
 
@@ -173,25 +203,6 @@ Each workflow:
 ### Application Running
 
 ![Frontend](screenshots/application.png)
-
----
-
-### CI/CD Workflows 
-
-![Workflows Active](screenshots/workflows-active.png)
-
-![Workflows Logs](screenshots/workflow-logs.png)
-
----
-
-
-### Docker Hub Repositories
-
-![Docker Hub Images](screenshots/dockerhub-image.png)
-
-![Docker Hub Tag (SHA)](screenshots/dockerhub-sha.png)
-
-![Docker Hub Tag (SHA)](screenshots/dockerhub-tags.png)
 
 ---
 
