@@ -185,7 +185,7 @@ Each workflow:
 ---
 
 
-### Docker Hub
+### Docker Hub Repositories
 
 ![Docker Hub Images](screenshots/dockerhub-image.png)
 
