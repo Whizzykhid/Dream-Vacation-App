@@ -18,7 +18,7 @@ services:
     
     # Backend service
     backend:
-        build: ./backend
+        image: whixxy/dream-vacation-backend:latest
         container_name: vacation-backend
         environment:
             DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
@@ -34,7 +34,7 @@ services:
 
     # Frontend service
     frontend:
-        build: ./frontend
+        image: whixxy/dream-vacation-frontend:latest
         container_name: vacation-frontend
         environment:
             REACT_APP_API_URL: ${REACT_APP_API_URL}
