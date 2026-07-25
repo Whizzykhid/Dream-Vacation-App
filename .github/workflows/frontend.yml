@@ -59,7 +59,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: ${{ secrets.EC2_PORT }}
           source: "."
-          target: "/home/ubuntu/applications/dream-vacation-app"
+          target: "/home/${{ secrets.EC2_USER }}/applications/dream-vacation-app"
 
       - name: Deploy Docker Compose on EC2
         uses: appleboy/ssh-action@v0.1.9
@@ -69,6 +69,9 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           port: ${{ secrets.EC2_PORT }}
           script: |
-            cd /home/ubuntu/applications/dream-vacation-app
+            cd /home/${{ secrets.EC2_USER }}/applications/dream-vacation-app
+            
+            echo "${{ secrets.ENV_FILE }}" > .env
+            
             docker compose pull
             docker compose up -d
