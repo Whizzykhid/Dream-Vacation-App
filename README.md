@@ -244,7 +244,13 @@ The EC2 instance was bootstrapped using EC2 User Data to automate:
 
 ## Deployment Verification
 
-### Running Containers
+### Server Containers
+
+![Docker Containers](screenshots/server-containers.png)
+
+---
+
+### Local Containers
 
 ![Docker Containers](screenshots/containers-running.png)
 
