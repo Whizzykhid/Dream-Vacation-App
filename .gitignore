@@ -1,2 +1,14 @@
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+
+# Variables
+*.tfvars
+*.tfvars.json
+
+# Environment
 .env
-node_modules
+.env.*
