@@ -91,10 +91,15 @@ Infrastructure created includes:
 ## Terraform Workflow
 
 Terraform validates, plans and provisions infrastructure consistently.
+### Terraform Init
 
 ![Terraform Init](screenshots/terraform-init.png)
 
+### Terraform Plan
+
 ![Terraform Plan](screenshots/terraform-plan.png)
+
+### Terraform Apply
 
 ![Terraform Apply](screenshots/terraform-apply.png)
 
