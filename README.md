@@ -1,184 +1,127 @@
-# Dream Vacation Destinations
+# 🌍 Dream Vacation Destinations
 
-Dream Vacation Destinations is a full-stack web application that allows users to create and manage a personal list of countries they would like to visit. Country information is retrieved from the REST Countries API, while user data is stored in a PostgreSQL database.
+A production-ready, containerized full-stack web application that allows users to create and manage a personal list of dream travel destinations.
 
-The project was further enhanced by containerizing the application with Docker, orchestrating the services with Docker Compose, implementing CI/CD pipeline using GitHub Actions, publishing images to Docker Hub and automatically deploying the application to an AWS EC2 instance
+This project demonstrates modern DevOps practices by combining **Docker**, **Docker Compose**, **GitHub Actions**, **Terraform**, **AWS**, and **CloudWatch** into a fully automated deployment pipeline.
 
----
-
-## Features
-
-- Add countries to a personal dream vacation list.
-- View country details including capital, region and population.
-- Remove countries from the list.
-- Persistent data storage with PostgreSQL.
-- Multi-container deployment using Docker Compose.
-- Automated Docker image builds and publishing.
-- Automated Deployment to AWS EC2.
+Instead of manually provisioning infrastructure or deploying applications, the entire workflow—from infrastructure creation to application deployment—is automated using Infrastructure as Code (IaC) and Continuous Integration/Continuous Deployment (CI/CD).
 
 ---
 
-## Technologies Used
+# 📌 Features
 
-| Component | Technology |
-|----------|------------|
+- Full-stack React and Node.js application
+- Dockerized frontend, backend and PostgreSQL services
+- Reverse proxy using Nginx
+- Infrastructure provisioned using Terraform
+- Custom AWS networking (VPC, Subnet, Internet Gateway and Route Table)
+- EC2 provisioning with automated bootstrapping using User Data
+- Remote Terraform state stored in Amazon S3
+- State locking using DynamoDB
+- Automated Docker image builds with GitHub Actions
+- Docker images published to Docker Hub
+- Automated deployment to AWS EC2
+- Infrastructure monitoring using Amazon CloudWatch
+- Secure credential management with GitHub Secrets
+
+---
+
+# Technology Stack
+
+| Layer | Technology |
+|---------|------------|
 | Frontend | React |
-| Backend | Node.js & Express |
+| Backend | Node.js + Express |
 | Database | PostgreSQL |
 | Reverse Proxy | Nginx |
 | Containerization | Docker |
-| Orchestration | Docker Compose |
+| Container Orchestration | Docker Compose |
+| Infrastructure as Code | Terraform |
 | CI/CD | GitHub Actions |
 | Container Registry | Docker Hub |
-| Cloud Platform | AWS EC2 |
-| Networking | AWS VPC |
+| Cloud Platform | AWS |
+| Compute | Amazon EC2 |
+| Networking | Amazon VPC |
+| Monitoring | Amazon CloudWatch |
+| Remote State | Amazon S3 + DynamoDB |
 
 ---
 
-## Project Structure
+# Architecture Overview
 
-```text
-.
-├── frontend/
-├── backend/
-├── .github/
-│   └── workflows/
-│       ├── frontend.yml
-│       └── backend.yml
-├── docker-compose.yml
-├── README.md
-└── screenshots/
-```
+The application follows a modern DevOps workflow that combines Infrastructure as Code, containerization, continuous integration, and automated deployment.
+
+The deployment process is as follows:
+
+1. The developer pushes code to GitHub.
+2. GitHub Actions automatically builds the frontend and backend Docker images.
+3. The images are published to Docker Hub.
+4. Terraform provisions or updates the AWS infrastructure.
+5. The deployment workflow securely connects to the EC2 instance over SSH.
+6. Docker Compose pulls the latest images from Docker Hub and starts the application.
+7. Amazon CloudWatch monitors the EC2 instance for CPU utilization and other metrics.
+
+> **Note:** An architecture diagram will be added in a future revision of this project.
+---
+
+# 📁 Project Structure
+
+![Project Structure](screenshots/project-structure.png)
 
 ---
 
-## Project Enhancements
+# ☁️ Infrastructure as Code (Terraform)
 
-The following improvements were made:
+Terraform was used to provision and manage the application's AWS infrastructure using reusable modules.
 
-- Containerized the frontend and backend using Docker.
-- Configured a multi-container application with Docker Compose.
-- Added PostgreSQL with persistent Docker volumes.
-- Configured Nginx to serve the frontend.
-- Connected all services through Docker networking.
-- Created separate GitHub Actions workflows for the frontend and backend.
-- Configured GitHub Secrets for secure credential management.
-- Automatically built and published Docker images to Docker Hub.
-- Tagged Docker images using both `latest` and the Git commit SHA.
-- Provisioned AWS infrastructure consisting of:
-  - Virtual Private Cloud (VPC)
-  - Public Subnet
-  - Internet Gateway
-  - Route Table
-  - EC2 Instance
-- Extended the pipeline to automatically deploy the latest application version to AWS EC2 using SSH and Docker Compose.
+Infrastructure created includes:
 
-> **Note:** The backend application logic (`server.js`) was provided as part of the original project and was not modified.
+- Custom VPC
+- Public Subnet
+- Internet Gateway
+- Route Table
+- Security Group
+- EC2 Instance
+- CloudWatch Alarm
+- Remote State Backend (Amazon S3)
+- State Locking (DynamoDB)
 
 ---
 
-## Live Deployment
+## Terraform Workflow
 
-| Service | URL |
-|---------|-----|
-| Frontend | http://44.192.39.74:8080 |
-| Backend API | http://44.192.39.74:3001/api/destinations |
+Terraform validates, plans and provisions infrastructure consistently.
 
-> **Note:** The application is hosted on an AWS EC2 instance. If the links are unavailable, the instance may have been stopped or terminated after submission.
+![Terraform Init](screenshots/terraform-init.png)
 
-## Running Locally
+![Terraform Plan](screenshots/terraform-plan.png)
 
-Clone the repository:
-
-```bash
-git clone <repository-url>
-cd <repository-name>
-```
-
-Start the application:
-
-```bash
-docker compose up --build
-```
-
-Stop the application:
-
-```bash
-docker compose down
-```
-
-Once the containers are running:
-
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:8080 |
-| Backend API | http://localhost:3001 |
+![Terraform Apply](screenshots/terraform-apply.png)
 
 ---
 
-## Deployment Pipeline
+## Remote Backend
 
-This project uses GitHub Actions to automate the entire deployment process. Whenever changes are pushed to the configured branch, the workflow runs automatically, reducing the need for manual deployment.
+Terraform state is stored remotely inside an Amazon S3 bucket while DynamoDB provides state locking to prevent concurrent modifications.
 
-### 1. Checkout the Repository
-The workflow begins by checking out the latest version of the source code from the GitHub repository.
-
-### 2. Build Docker Images
-Docker Buildx is set up, after which the frontend and backend images are built using their respective Dockerfiles.
-
-### 3. Authenticate with Docker Hub
-GitHub Actions securely logs in to Docker Hub using credentials stored as GitHub Secrets, ensuring that sensitive information is never exposed in the repository.
-
-### 4. Push Docker Images
-Once the images are built successfully, they are tagged with both `latest` and the current Git commit SHA before being pushed to Docker Hub.
-
-### 5. Deploy to AWS EC2
-After publishing the images, the workflow connects to the EC2 instance over SSH. The latest project files, including the `docker-compose.yml` file, are copied to the server, and the required environment variables are generated from GitHub Secrets.
-
-The workflow then pulls the latest Docker images from Docker Hub and restarts the application using Docker Compose.
-
-### 6. Application Update
-Once the deployment is complete, the updated containers are running on the EC2 instance, making the latest version of the application available without requiring any manual intervention.
-
-
-## Environment Variables
-
-Before starting the application, create the required `.env` file(s) using the provided `.env.example` file(s).
-
-Example variables:
-
-```env
-DATABASE_URL=
-PORT=
-COUNTRIES_API_BASE_URL=
-```
-
-Sensitive information including:
-
-- Docker Hub credentials
-- SSH private key
-- EC2 host details
-- Application environment variables
-
-are securely stored using **GitHub Secrets** and are never committed to this repository.
+![S3 Backend](screenshots/s3-backend.png)
 
 ---
 
-# Screenshots
 
 ## AWS Infrastructure
 
-### Virtual Private Cloud (VPC)
+### Virtual Private Cloud
 
 ![VPC](screenshots/aws-vpc.png)
-
----
 
 ### Public Subnet
 
 ![Subnet](screenshots/aws-subnet.png)
 
----
+### Security Group
+
+![Security Group](screenshots/security-groups.png)
 
 ### EC2 Instance
 
@@ -186,41 +129,84 @@ are securely stored using **GitHub Secrets** and are never committed to this rep
 
 ---
 
-### Security Group
+# 🚀 EC2 Provisioning
 
-![Security Group](screenshots/security-group.png)
+The EC2 instance is automatically configured using a User Data script during provisioning.
+
+The bootstrap script performs the following tasks automatically:
+
+- Updates system packages
+- Installs Docker
+- Installs Docker Compose
+- Starts Docker
+- Enables Docker on boot
+- Adds the Ubuntu user to the Docker group
+
+### User Data Script
+
+![User Data](screenshots/userdata-script.png)
+
+### Bootstrap Verification
+
+![Bootstrap](screenshots/userscript-confirm.png)
+
+### Running Containers
+
+![EC2 Containers](screenshots/ec2-containers.png)                                                                                                                           
 
 ---
 
-## EC2 Bootstrap (User Data)
+# 🔄 Continuous Integration & Continuous Deployment
 
-The EC2 instance was bootstrapped using EC2 User Data to automate:
+This project uses GitHub Actions to automate both infrastructure provisioning and application deployment.
 
-- Docker installation
-- Docker Compose installation
-- Docker service startup
-- Docker service enablement
-- Docker group configuration
+The workflow performs the following operations:
 
-![User Data](screenshots/ec2-user-data.png)
+1. Checkout source code
+2. Build frontend Docker image
+3. Build backend Docker image
+4. Push Docker images to Docker Hub
+5. Provision AWS infrastructure using Terraform
+6. Connect to EC2 over SSH
+7. Copy deployment files
+8. Pull the latest Docker images
+9. Deploy the application using Docker Compose
+
+# 📊 Monitoring
+
+Amazon CloudWatch monitors the EC2 instance after deployment.
+
+Monitoring includes:
+
+- CPU Utilization
+- CloudWatch Alarm
+- EC2 Metrics
+
+### CPU Metrics
+
+![Metrics](screenshots/cloudwatch-metrics.png)
+
+### EC2 Metrics
+
+![EC2 Metrics](screenshots/cloudwatch-ec2.png)
+
+### CPU Alarm
+
+![Alarm](screenshots/cloudwatch-alarm.png)
 
 ---
 
-## Live Application
+# 🔐 Terraform State Management
 
-### Running Application
+Terraform remote state is protected using DynamoDB state locking.
 
-![Application](screenshots/live-application.png)
+![DynamoDB Lock](screenshots/dynamodb-lock-table.png)
 
 ---
-
-## GitHub Actions
 
 ### Successful Workflow
 
-![Workflow](screenshots/github-actions-success.png)
-
----
+![Workflow](screenshots/workflows-success.png)
 
 ### Deployment Logs
 
@@ -228,13 +214,13 @@ The EC2 instance was bootstrapped using EC2 User Data to automate:
 
 ---
 
-## Docker Hub
+# 🐳 Docker Hub
 
-### Docker Images
+Both frontend and backend images are automatically published to Docker Hub.
 
-![Images](screenshots/dockerhub-image.png)
+### Published Images
 
----
+![Docker Hub](screenshots/dockerhub-image.png)
 
 ### Image Tags
 
@@ -242,35 +228,73 @@ The EC2 instance was bootstrapped using EC2 User Data to automate:
 
 ---
 
-## Deployment Verification
+# 🌐 Live Application
 
-### Server Containers
+The application is deployed to an AWS EC2 instance.
 
-![Docker Containers](screenshots/server-containers.png)
+| Service | URL |
+|---------|-----|
+| Frontend | http://44.192.39.74:8080 |
+| Backend API | http://44.192.39.74:3001/api/destinations |
+
+### Application
+
+![Application](screenshots/live-application.png)
+
+### Running Containers
+
+![Containers](screenshots/containers-running.png)
 
 ---
 
-### Local Containers
+# 💻 Running Locally
 
-![Docker Containers](screenshots/containers-running.png)
+Clone the repository.
+
+```bash
+git clone https://github.com/<username>/<repo>.git
+cd <repo>
+```
+
+Build and start the application.
+
+```bash
+docker compose up --build
+```
+
+Stop the application.
+
+```bash
+docker compose down
+```
 
 ---
 
-### Docker Compose
+# 🔑 Environment Variables
 
-![Docker Compose](screenshots/docker-compose-running.png)
+Create the required `.env` files before running the project.
+
+Example:
+
+```env
+DATABASE_URL=
+PORT=
+COUNTRIES_API_BASE_URL=
+```
+
+Sensitive credentials including Docker Hub credentials, AWS credentials, EC2 SSH keys and deployment secrets are securely stored using **GitHub Secrets** and are never committed to the repository.
 
 ---
 
-## Summary
+# 📸 Project Gallery
 
 This project demonstrates:
 
-- Docker containerization of a full-stack application.
-- Multi-container orchestration using Docker Compose.
-- Automated Docker image builds with GitHub Actions.
-- Secure secret management using GitHub Secrets.
-- Docker image publishing to Docker Hub.
-- Automated deployment to AWS EC2 using SSH.
-- Continuous delivery using Docker Compose.
-- AWS networking using a custom VPC, public subnet, Internet Gateway, and Route Table.
+- Infrastructure as Code using Terraform
+- Containerization using Docker
+- Multi-container orchestration with Docker Compose
+- CI/CD automation using GitHub Actions
+- Automated AWS EC2 deployment
+- CloudWatch monitoring
+- Remote Terraform state with Amazon S3
+- State locking with DynamoDB
